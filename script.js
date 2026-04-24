@@ -68,7 +68,7 @@ let selectedSector = '';
 let deliveryCost = 0;
 
 // Variables para promociones y videos
-let promociones = JSON.parse(localStorage.getItem('promociones')) || [
+const defaultPromociones = [
     {
         id: 1,
         image: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&h=300&fit=crop',
@@ -88,6 +88,9 @@ let promociones = JSON.parse(localStorage.getItem('promociones')) || [
         createdAt: new Date().toISOString()
     }
 ];
+
+let storedPromociones = JSON.parse(localStorage.getItem('promociones'));
+let promociones = Array.isArray(storedPromociones) && storedPromociones.length > 0 ? storedPromociones : defaultPromociones;
 let videos = JSON.parse(localStorage.getItem('videos')) || [
     {
         id: 1,
@@ -1902,7 +1905,13 @@ function updateWebPromociones() {
             </div>
         `).join('');
     } else {
-        section.style.display = 'none';
+        section.style.display = 'block';
+        grid.innerHTML = `
+            <div class="promo-web-empty">
+                <p>No hay promociones activas por el momento.</p>
+                <p>Revisa esta sección más tarde para ver nuestras promociones especiales.</p>
+            </div>
+        `;
     }
 }
 
